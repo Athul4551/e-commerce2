@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <style>
+    .cart-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .cart-container h1 {
+      text-align: center;
+      color: #2874f0;
+      margin-bottom: 20px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+
+    .cart-item-details {
+      flex: 1;
+    }
+
+    .cart-item-details p {
+      margin: 5px 0;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .quantity-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quantity-actions button {
+      background-color: #2874f0;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .quantity-actions button:hover {
+      background-color: #1a5bb8;
+    }
+
+    .cart-item-actions a button {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .cart-item-actions a button:hover {
+      background-color: #d32f2f;
+    }
+
+    .cart-summary {
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .cart-summary p {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .checkout-btn {
+      background-color: #2874f0;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 20px;
+      display: inline-block;
+    }
+
+    .checkout-btn:hover {
+      background-color: #1a5bb8;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .cart-item img {
+        margin-bottom: 10px;
+      }
+      
+      .cart-summary {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cart-container">
+    <h1>Your Cart</h1>
+    {% if cart_items %}
+      <ul>
+        {% for item in cart_items %}
+          <li class="cart-item">
+            <img src="{{ item.product.feedimage.url }}" alt="{{ item.product.name }}">
+            <div class="cart-item-details">
+              <p><strong>{{ item.product.name }}</strong></p>
+              <p>Price: ${{ item.product.price }}</p>
+              <p>Quantity: {{ item.quantity }}</p>
+              <div class="quantity-actions">
+                <a href="{% url 'increment_cart' item.id %}"><button>+</button></a>
+                <a href="{% url 'decrement_cart' item.id %}"><button>-</button></a>
+              </div>
+            </div>
+            <div class="cart-item-actions">
+              <a href="{% url 'dele' item.id %}"><button class="delete-button">Remove</button></a>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+      <div class="cart-summary">
+        <p>Total Price: ${{ total_price }}</p>
+        <a href="{% url 'checkout' %}"><button class="checkout-btn">Checkout</button></a>
+      </div>
+    {% else %}
+      <p>Your cart is empty.</p>
+    {% endif %}
+  </div>
+</body>
+</html>

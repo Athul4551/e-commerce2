@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            --flipkart-blue: #2874f0;
+            --flipkart-yellow: #ffd700;
+            --light-gray: #f1f3f6;
+            --text-gray: #212121;
+            --success-green: #388e3c;
+            --border-color: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Inter, system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: var(--light-gray);
+        }
+        
+        /* Navigation Styles */
+        .navi {
+            background: var(--flipkart-blue);
+            padding: 12px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .left {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .ele {
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 8px 16px;
+            transition: all 0.2s ease;
+            border-radius: 4px;
+        }
+        
+        .ele:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .search {
+            flex: 1;
+            max-width: 600px;
+            min-width: 200px;
+        }
+        
+        .ss {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .ice {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .ice1 {
+            background: white;
+            color: var(--flipkart-blue);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .ice1:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Gallery and Product Info */
+        .gallery-wrapper {
+            max-width: 1400px;
+            margin: 24px auto;
+            padding: 24px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: minmax(400px, 1fr) 2fr;
+            gap: 32px;
+            align-items: start;
+        }
+        
+        .hh {
+            position: sticky;
+            top: 100px;
+            padding: 24px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .hh img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            margin-bottom: 16px;
+        }
+        
+        .product-info {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .product-info p:first-of-type {
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--text-gray);
+            margin-bottom: 8px;
+        }
+        
+        .product-info p:nth-of-type(2) {
+            font-size: 30px;
+            font-weight: bold;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .product-info p:nth-of-type(3) {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--text-gray);
+        }
+        
+        .product-info p:nth-of-type(4) {
+            background: #fff4f4;
+            color: var(--success-green);
+            font-size: 16px;
+            padding: 12px 16px;
+            border-radius: 4px;
+            border: 1px solid #fde1e1;
+            margin: 8px 0;
+        }
+        
+        .product-info p:nth-of-type(5) {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Button Styles */
+        button {
+            background: var(--flipkart-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            max-width: 200px;
+            margin-top: 16px;
+        }
+        
+        button:hover {
+            background: #1a5bc0;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Footer Styles */
+        footer {
+            background: #172337;
+            color: white;
+            padding: 48px 24px;
+            margin-top: 48px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+        }
+        
+        .foot-icon {
+            display: flex;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        
+        .foot-icon div {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .foot-icon div:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        footer ul {
+            list-style: none;
+        }
+        
+        footer ul li {
+            margin-bottom: 12px;
+            color: #878787;
+        }
+        
+        footer h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        footer a {
+            color: #878787;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        footer a:hover {
+            color: white;
+        }
+        
+        /* Link Styles */
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .hh {
+                position: relative;
+                top: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navi {
+                padding: 12px;
+            }
+            
+            .left {
+                gap: 12px;
+            }
+            
+            .gallery-wrapper {
+                padding: 12px;
+                margin: 12px;
+            }
+            
+            .gallery {
+                gap: 16px;
+            }
+            
+            .hh, .product-info {
+                padding: 16px;
+            }
+            
+            .product-info p:first-of-type {
+                font-size: 20px;
+            }
+            
+            .product-info p:nth-of-type(2) {
+                font-size: 24px;
+            }
+            
+            .product-info p:nth-of-type(3) {
+                font-size: 22px;
+            }
+            
+            .product-info p:nth-of-type(4) {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+            
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            button {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navi">
+        <div class="left">
+            <a href="{% url 'firstpage' %}"><div class="ele">Shop Now</div></a>
+           <a href="{% url 'review' %}"><div class="ele">Reviews</div></a>
+           <a href="{% url 'aboutus' %}"><div class="ele">About Us</div></a>
+            <div class="ele">Contact Us</div>
+            <div class="search">
+                <input class="ss" type="search" placeholder="Product Code" id="first name" name="firstname" maxlength="50px" required>
+            </div>
+            <div class="ice">
+                <div class="ice1">F</div>
+                <div class="ice1">IN</div>
+            </div>
+            {% if 'username' in request.session %}
+            <div><a href="{% url 'logout' %}"><button>Logout</button></a></div>
+            {% else %}
+            <div><a href="{% url 'userlogin' %}"><button>Login</button></a></div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="gallery-wrapper">
+        <div class="gallery">
+            {% for i in gallery_images %}
+                <div class="hh">
+                    <img src="{{ i.feedimage.url }}" alt="Gallery Image">
+                </div>
+                <div class="product-info">
+                    <p>{{ i.name }}</p>
+                    <p>{{ i.model }}</p>
+                    <p>{{ i.price }}</p>
+                    <p>{{ i.offers }}</p>
+                </div>
+                {% if i.id in cart_product_ids %}
+                    <a href="{% url 'cart_view' %}"><button>Go to Cart</button></a>
+                {% else %}
+                    <a href="{% url 'add_to_cart' i.id %}"><button>Add to Cart</button></a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <footer>
+        <div class="footer-block1">
+            <div class="container">
+                <div class="colm1">
+                    <ul>
+                        <li class="foot-logo"></li>
+                        <li class="foot-icon">
+                            <div class="f"><p>F</p></div>
+                            <div class="tw"><p>TW</p></div>
+                            <div class="in"><p>IN</p></div>
+                            <div class="x"><p>X</p></div>
+                        </li>
+                        <li>
+                            <p>© All rights reserved by shose cart, Cochin, India.</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="colm2">
+                    <ul>
+                        <li><h4>Solutions</h4></li>
+                        <li>My Account</li>
+                        <li>Track Your Order</li>
+                        <li>Order History</li>
+                        <li>Payment Methods</li>
+                        <li>Privacy Policy</li>
+                    </ul>
+                </div>
+                <div class="colm3">
+                    <ul>
+                        <li><h4>About Us</h4></li>
+                        <li><p>About Us</p></li>
+                        <li><p>Terms & Conditions</p></li>
+                        <li><p>Privacy Policy</p></li>
+                        <li><p>Return Policy</p></li>
+                        <li><p>Site Map</p></li>
+                    </ul>
+                </div>
+                <div class="colm4">
+                    <ul>
+                        <li><h4>Contact Us</h4></li>
+                        <li><p>Kureekkadu, Ernakulam, Kerala</p></li>
+                        <li><a href="tel:+918606570657">+91-86065 70657</a></li>
+                        <li><p>Mon - Sat / 9:00 AM - 6:00 PM</p></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

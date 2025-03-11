@@ -1,0 +1,220 @@
+{%load static%} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Body Styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4; /* Light grey background */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+        }
+        
+        /* Main Heading */
+        h1 {
+            color: #2874f0; /* Flipkart blue */
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* Form Container */
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 30px;
+        }
+        
+        /* Form Fields - Common styling for text inputs */
+        form input[type="file"],
+        form input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        /* Focus Effect on Inputs */
+        form input[type="file"]:focus,
+        form input[type="text"]:focus {
+            border-color: #2874f0; /* Flipkart blue */
+            box-shadow: 0 0 8px rgba(40, 116, 240, 0.3);
+            outline: none;
+        }
+        
+        /* Additional styling for model and offers fields */
+        input[name="model"],
+        input[name="offers"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        input[name="model"]:focus,
+        input[name="offers"]:focus {
+            border-color: #2874f0;
+            box-shadow: 0 0 8px rgba(40, 116, 240, 0.3);
+            outline: none;
+        }
+        
+        /* Submit Button */
+        form button {
+            background-color: #2874f0; /* Flipkart blue */
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        form button:hover {
+            background-color: #0d58d1; /* Darker blue for hover */
+            transform: scale(1.05); /* Slight zoom effect */
+        }
+        
+        /* Gallery Image Display */
+        div {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        div img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Error Message Paragraph */
+        p {
+            color: #d32f2f; /* Red for error message */
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        /* Logout Link */
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2874f0; /* Flipkart blue */
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s, text-decoration 0.3s;
+        }
+        
+        a:hover {
+            color: #0d58d1; /* Darker blue for hover */
+            text-decoration: underline;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 28px;
+            }
+            form {
+                padding: 20px;
+            }
+            form input[type="file"],
+            form input[type="text"],
+            form button {
+                font-size: 14px;
+            }
+            a {
+                font-size: 14px;
+            }
+        }
+        </style>
+        
+</head>
+<body>
+   <h1>welcome</h1>
+   {% if data1 %}
+    <form action="{% url 'edit_g' data1.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="image" id="image" value="{{data1.myimage}}" required>
+        name
+    <input type="text" name="todo" class="ww" value="{{data1.title1}}"><br><br>
+    price
+    <input type="text" name="date" class="www" value="{{data1.price}}"><br><br>
+    {% comment %} delivery type
+    <input type="text" name="course" class="ww" value="{{data1.title3}}"><br><br> {% endcomment %}
+    quantity
+    <input type="text" name="course" class="ww" value="{{data1.quantity}}"><br><br>
+    model
+    <input type="address" name="model" class="ww" value="{{data1.model}}"><br><br>
+    offers
+    <input type="address" name="offers" class="ww" value="{{data1.offers}}"><br><br>
+    <!-- <input type="submit" value="submit" class="cc"><br><br> -->
+    <button type="submit" class="cc">submit</button>
+    </form>
+   {% else %}
+   <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="image">Upload Image:</label>
+    <input type="file" name="image" id="image" required>
+    company
+    <input type="text" name="todo" class="ww"><br><br>
+    price
+    <input type="text" name="date" class="www"><br><br>
+    {% comment %} delivary type
+    <input type="text" name="course" class="ww"><br><br> {% endcomment %}
+    quantity
+    <input type="text" name="quant" class="ww"><br><br>
+    model
+    <input type="address" name="model" class="ww"><br><br>
+    offers
+    <input type="address" name="offers" class="ww"><br><br>
+    <button type="submit">Submit</button>
+    {% endif %}
+</form>
+<div>
+    {% for i in gallery_images %}
+    {% if i.feedimage %}
+    {% else %}
+        <p>No image for this gallery item</p>
+    {% endif %}
+{% empty %}
+    <p>No images uploaded yet.</p>
+{% endfor %}
+</div>
+
+   <a href="{% url 'logout' %}">logout</a>
+</body>
+</html>
