@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Navigation Bar */
+.navi {
+    background-color: #1e3a8a;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.navi .left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.navi a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.navi .search input {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+}
+
+.navi button {
+    background-color: #ff9800;
+    border: none;
+    padding: 8px 15px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Order Form */
+form {
+    width: 50%;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+form h2 {
+    text-align: center;
+    color: #1e3a8a;
+}
+
+form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+form input, form textarea, form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+form button {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    background-color: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #153075;
+}
+
+/* Footer */
+footer {
+    background-color: #1e3a8a;
+    color: white;
+    padding: 20px 0;
+    margin-top: 30px;
+}
+
+.footer-block1 .container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.footer-block1 ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-block1 li {
+    margin: 8px 0;
+}
+
+.footer-block1 a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.footer-block1 h4 {
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ff9800;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="navi">
+        <div class="left">
+            <a href="{% url 'firstpage' %}"><div class="ele">Shop Now</div></a>
+            <a href="{% url 'review' %}"><div class="ele">Reviews</div></a>
+            <a href="{% url 'aboutus' %}"><div class="ele">About Us</div></a>
+            <div class="ele">Contact Us</div>
+            <div class="search">
+                <input class="ss" type="search" placeholder="Product Code" id="first name" name="firstname" maxlength="50px" required>
+            </div>
+            <div class="ice">
+                <div class="ice1">F</div>
+                <div class="ice1">IN</div>
+            </div>
+            {% if 'username' in request.session %}
+            <div><a href="{% url 'logout' %}"><button>Logout</button></a></div>
+            {% else %}
+            <div><a href="{% url 'userlogin' %}"><button>Login</button></a></div>
+            {% endif %}
+        </div>
+    </div> 
+    <form method="POST">
+        {% csrf_token %}
+        <h2>Confirm Your Order</h2>
+    
+        <p>Product: {{ product.name }}</p>
+        <p>Price: ₹{{ product.price }}</p>
+    
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" value="1" min="1">
+    
+        <label for="address">Address:</label>
+        <textarea name="address" required></textarea>
+    
+        <label for="payment_method">Payment Method:</label>
+        <select name="payment_method">
+            <option value="COD">Cash on Delivery</option>
+            <option value="ONLINE">Online Payment</option>
+        </select>
+    
+        <button type="submit">Place Order</button>
+    </form>
+    <footer>
+        <div class="footer-block1">
+            <div class="container">
+                <div class="colm1">
+                    <ul>
+                        <li class="foot-logo"></li>
+                        <li class="foot-icon">
+                            <div class="f"><p>F</p></div>
+                            <div class="tw"><p>TW</p></div>
+                            <div class="in"><p>IN</p></div>
+                            <div class="x"><p>X</p></div>
+                        </li>
+                        <li>
+                            <p>© All rights reserved by shose cart, Cochin, India.</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="colm2">
+                    <ul>
+                        <li><h4>Solutions</h4></li>
+                        <li>My Account</li>
+                        <li>Track Your Order</li>
+                        <li>Order History</li>
+                        <li>Payment Methods</li>
+                        <li>Privacy Policy</li>
+                    </ul>
+                </div>
+                <div class="colm3">
+                    <ul>
+                        <li><h4>About Us</h4></li>
+                        <li><p>About Us</p></li>
+                        <li><p>Terms & Conditions</p></li>
+                        <li><p>Privacy Policy</p></li>
+                        <li><p>Return Policy</p></li>
+                        <li><p>Site Map</p></li>
+                    </ul>
+                </div>
+                <div class="colm4">
+                    <ul>
+                        <li><h4>Contact Us</h4></li>
+                        <li><p>Kureekkadu, Ernakulam, Kerala</p></li>
+                        <li><a href="tel:+918606570657">+91-86065 70657</a></li>
+                        <li><p>Mon - Sat / 9:00 AM - 6:00 PM</p></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+</body>
+</html>

@@ -17,7 +17,10 @@
            <a href="{% url 'aboutus' %}"><div class="ele">About Us</div></a>
             <div class="ele">Contact Us</div>
             <div class="search">
-                <input class="ss" type="search" placeholder="Product Code" id="first name" name="firstname" maxlength="50px" required>
+                <form method="GET" action="{% url 'search_results' %}">
+                    <input type="text" name="q" placeholder="Search products..." required>
+                    <button type="submit">Search</button>
+                </form>
             </div>
             <div class="ice">
                 <div class="ice1">F</div>

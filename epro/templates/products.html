@@ -112,7 +112,7 @@
         }
         
         .hh {
-            position: sticky;
+           /* position: sticky;*/
             top: 100px;
             padding: 24px;
             background: white;
@@ -363,6 +363,9 @@
                 {% else %}
                     <a href="{% url 'add_to_cart' i.id %}"><button>Add to Cart</button></a>
                 {% endif %}
+                <a href="{% url 'buy_now' i.id %}">
+                    <button class="buy-now-btn">Buy Now</button>
+                </a>
             {% endfor %}
         </div>
     </div>

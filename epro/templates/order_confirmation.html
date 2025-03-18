@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        .order-container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .order-details {
+            margin-top: 20px;
+        }
+        .order-details p {
+            font-size: 18px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="order-container">
+    <h1>Order Confirmation</h1>
+    <div class="order-details">
+        <p><strong>Product:</strong> {{ order.product.name }}</p>
+        <p><strong>Price:</strong> ${{ order.product.price }}</p>
+        <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+        <p><strong>Total Price:</strong> ${{ order.total_price }}</p>
+        <p><strong>Status:</strong> {{ order.status }}</p>
+    </div>
+    <a href="/" class="back-btn">Back to Home</a>
+</div>
+
+</body>
+</html>

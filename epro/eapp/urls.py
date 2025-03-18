@@ -25,7 +25,10 @@ urlpatterns = [
    path('checkout/', views.checkout, name='checkout'),
    path('cart/increment/<int:id>/', views.increment_cart, name='increment_cart'),
    path('cart/decrement/<int:id>/', views.decrement_cart, name='decrement_cart'),
-   
+   path('sample',views.sample,name='sample'),
+   path('buy_now/<int:product_id>/', views.buy_now, name='buy_now'),
+   path('order_confirmation/<int:order_id>/', views.order_confirmation, name='order_confirmation'),
+   path('search/', views.search_results, name='search_results'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

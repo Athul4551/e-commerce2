@@ -93,9 +93,19 @@ def passwordreset(request):
                 return redirect('getusername')
 
     return render(request, "passwordreset.html")
-def firstpage(request):
-    gallery_images = Gallery.objects.all()
-    return render(request, "firstpage.html", {"gallery_images": gallery_images})
+# def firstpage(request):
+#     gallery_images = Gallery.objects.all()
+#     return render(request, "firstpage.html", {"gallery_images": gallery_images})
+def firstpage(request): 
+    gallery_images = Gallery.objects.all()  
+    if request.user.is_authenticated:
+        cart_item_count = Cart.objects.filter(user=request.user).count()
+    else:
+        cart_item_count = 0 
+    return render(request, "firstpage.html", {
+        "gallery_images": gallery_images,
+        "cart_item_count": cart_item_count
+    })
 def usersignup(request):
     if request.POST:
         email = request.POST.get('email')
@@ -137,9 +147,20 @@ def userlogin(request):
             messages.error(request, "Invalid credentials.")
 
     return render(request, 'userlogin.html')
-def product(request,id):
-    gallery_images =Gallery.objects.filter(pk=id)
-    return render(request,'products.html',{"gallery_images": gallery_images,})
+# def product(request,id):
+#     gallery_images =Gallery.objects.filter(pk=id)
+#     return render(request,'products.html',{"gallery_images": gallery_images,})
+def product(request, id):
+    gallery_images = Gallery.objects.filter(pk=id)
+    if request.user.is_authenticated:
+        cart_item_count = Cart.objects.filter(user=request.user).count()
+    else:
+        cart_item_count = 0 
+    
+    return render(request, 'products.html', {
+        "gallery_images": gallery_images,
+        "cart_item_count": cart_item_count
+    })
 def review(request):
     return render(request,"review.html")
 def aboutus(request):
@@ -151,7 +172,7 @@ def adminpage(request):
 def delete_g(request,id):
     feeds=Gallery.objects.filter(pk=id)
     feeds.delete()
-    return redirect(index)
+    return redirect('adminpage')
 def add(request):
     return render(request,"index.html")
 def logoutuser(request):
@@ -160,7 +181,6 @@ def logoutuser(request):
     return redirect(firstpage)
 @login_required
 def edit_g(request, id):
-    # Fetch the Gallery object or return a 404 if not found
     gallery_image = get_object_or_404(Gallery, pk=id, user=request.user)
     
     if request.method == 'POST':
@@ -170,20 +190,19 @@ def edit_g(request, id):
         # todo311=request.POST.get("course")
         quanty=request.POST.get("quant")
         mod=request.POST.get("model") 
-        off=request.POST.get("offers")# Use `.get` to avoid KeyError
+        off=request.POST.get("offers")
         
-        # Validate form fields (example: ensure none are empty)
         if not name or not price or not quanty or not mod or not off:
             messages.error(request, "All fields are required.")
             return render(request, 'index.html', {'data1': gallery_image})
         
-        # Update the object
+        
         gallery_image.name = name
         gallery_image.price = price
         gallery_image.quantity = quanty
         gallery_image.model = mod
         gallery_image.offers = off
-        if myimage:  # Only update the image if one is provided
+        if myimage: 
             gallery_image.feedimage = myimage
         gallery_image.save()
 
@@ -192,28 +211,71 @@ def edit_g(request, id):
 
     # Handle GET request to display the form
     return render(request, 'index.html', {'data1': gallery_image})
-@login_required
+# @login_required(login_url='userlogin')  # Redirect to your login page
+# def add_to_cart(request, id):
+#     product = get_object_or_404(Gallery, id=id)
+#     cart_item, created = Cart.objects.get_or_create(
+#         user=request.user,
+#         product=product,
+#         defaults={'quantity': 1}
+#     )
+#     if not created:
+#         cart_item.quantity += 1
+#         cart_item.save()
+#     return redirect('cart_view')
+@login_required(login_url='userlogin')
 def add_to_cart(request, id):
     if 'username' in request.session:
-        product = get_object_or_404(Gallery, id=id)
+        try:
+            product = Gallery.objects.get(id=id)
+        except Gallery.DoesNotExist:
+        
+            return redirect('product_not_found')  
+    
         cart_item, created = Cart.objects.get_or_create(
             user=request.user,
             product=product,
-            defaults={'quantity': 1}
+        
         )
         if not created:
-            cart_item.quantity += 1
+            if cart_item.product.quantity > cart_item.quantity:
+                cart_item.quantity += 1
+            else:
+                messages.error(request, "out of stock.")
+                return redirect('cart_view')
+        else:
+            cart_item.quantity = 1
             cart_item.save()
-        return redirect('cart_view')
-    else:
-        return redirect('userlogin')
+            return redirect('cart_view')
+
+
+# @login_required
+# def increment_cart(request, id):
+#     cart_item = get_object_or_404(Cart, pk=id, user=request.user)
+#     cart_item.quantity += 1
+#     cart_item.save()
+#     return redirect('cart_view')
 
 @login_required
 def increment_cart(request, id):
     cart_item = get_object_or_404(Cart, pk=id, user=request.user)
-    cart_item.quantity += 1
-    cart_item.save()
+    if cart_item.product.quantity > cart_item.quantity:
+        cart_item.quantity += 1
+        cart_item.save()
+    else:
+        messages.error(request, "Not enough stock available.")
+
     return redirect('cart_view')
+
+# @login_required
+# def decrement_cart(request, id):
+#     cart_item = get_object_or_404(Cart, pk=id, user=request.user)
+#     if cart_item.quantity > 1:
+#         cart_item.quantity -= 1
+#         cart_item.save()
+#     else:
+#         cart_item.delete()
+#     return redirect('cart_view')
 
 @login_required
 def decrement_cart(request, id):
@@ -225,11 +287,18 @@ def decrement_cart(request, id):
         cart_item.delete()
     return redirect('cart_view')
 
+# @login_required
+# def cart_view(request):
+#     cart_items = Cart.objects.filter(user=request.user)
+#     total_price = sum(item.product.price * item.quantity for item in cart_items)
+#     return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+
 @login_required
 def cart_view(request):
     cart_items = Cart.objects.filter(user=request.user)
     total_price = sum(item.product.price * item.quantity for item in cart_items)
-    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+    cart_item_count = cart_items.count()
+    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price, 'cart_item_count': cart_item_count})
 
 @login_required
 def delete_cart(request, id):
@@ -239,5 +308,123 @@ def delete_cart(request, id):
 
 @login_required
 def checkout(request):
-    # Your checkout logic here (this is a placeholder view)
     return render(request, 'checkout.html')
+def sample(request):
+    return redirect('add_to_cart')
+
+@login_required
+def buy_now(request, product_id):
+    if 'username' in request.session:
+        product = get_object_or_404(Gallery, id=product_id)
+
+        if request.method == "POST":
+            quantity = int(request.POST.get("quantity", 1))
+            address = request.POST.get("address")
+            payment_method = request.POST.get("payment_method")
+            total_price = product.price * quantity  
+
+            order = Order.objects.create(
+                user=request.user,
+                product=product,
+                quantity=quantity,
+                total_price=total_price,
+                address=address,
+                payment_method=payment_method,
+                status="Pending"
+            )
+
+            # Send email to admin
+            admin_email = "admin@example.com"  # Replace with the admin's email
+            subject = f"New Order Placed - {order.id}"
+            message = f"""
+            New Order Placed!
+
+            Order ID: {order.id}
+            User: {request.user.username}
+            Product: {product.name}
+            Quantity: {quantity}
+            Total Price: ₹{total_price}
+            Address: {address}
+            Payment Method: {payment_method}
+
+            Please process the order in the admin panel.
+            """
+
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [admin_email])
+
+            messages.success(request, "Order placed successfully! An email has been sent to the admin.")
+
+            return redirect('order_confirmation', order_id=order.id)
+
+        return render(request, "buy_now.html", {"product": product})
+
+    else:
+        return redirect('userlogin')
+# @login_required
+# def buy_now(request, product_id):
+#     if 'username' in request.session:
+#         product = get_object_or_404(Gallery, id=product_id)
+
+#         if request.method == "POST":
+#             quantity = int(request.POST.get("quantity", 1))
+
+#             # Check if requested quantity is within available stock
+#             if quantity > product.quantity:
+#                 messages.error(request, "Out of stock! You cannot buy more than the available quantity.")
+#                 return redirect('product', id=product_id)  # Redirect back to product page
+
+#             address = request.POST.get("address")
+#             payment_method = request.POST.get("payment_method")
+#             total_price = product.price * quantity  
+
+#             # Create the order
+#             order = Order.objects.create(
+#                 user=request.user,
+#                 product=product,
+#                 quantity=quantity,
+#                 total_price=total_price,
+#                 address=address,
+#                 payment_method=payment_method,
+#                 status="Pending"
+#             )
+
+#             # Deduct stock quantity
+#             product.quantity -= quantity
+#             product.save()
+
+#             # Send email to admin
+#             admin_email = "unni65129@gmail.com"  # Replace with actual admin email
+#             subject = f"New Order Placed - {order.id}"
+#             message = f"""
+#             New Order Placed!
+
+#             Order ID: {order.id}
+#             User: {request.user.username}
+#             Product: {product.name}
+#             Quantity: {quantity}
+#             Total Price: ₹{total_price}
+#             Address: {address}
+#             Payment Method: {payment_method}
+
+#             Please process the order in the admin panel.
+#             """
+#             send_mail(subject, message, settings.EMAIL_HOST_USER, [admin_email])
+
+#             messages.success(request, "Order placed successfully!")
+#             return redirect('order_confirmation', order_id=order.id)
+
+#         return render(request, "buy_now.html", {"product": product})
+
+#     else:
+#         return redirect('userlogin')
+
+
+
+@login_required
+def order_confirmation(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'order_confirmation.html', {'order': order})
+def search_results(request):
+    query = request.GET.get('q')
+    results = Gallery.objects.filter(name__icontains=query) if query else None
+    return render(request, 'search_results.html', {'results': results, 'query': query}) 
