@@ -161,10 +161,11 @@
             <h2 style="margin: 0; font-size: 1.5rem;">Shoes Kart</h2>
         </div>
         <div class="nav-links">
-            <a href="{% url 'add' %}">Upload Product</a>
+            <a href="{% url 'add' %}"><button>Add Product</button></a>
             <a href="{% url 'logout' %}">
-                <button>Logout</button>
-            </a>
+                <button>Logout</button></a>
+                <a href="{% url 'admin_users' %}"><button>View Registered Users</button></a>
+                <a href="{% url 'admin_orders' %}"><button>View Orders</button></a>
         </div>
     </div>
 
@@ -181,6 +182,5 @@
         </div>
         {% endfor %}
     </div>
-
 </body>
 </html>

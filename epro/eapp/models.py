@@ -41,3 +41,11 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Order {self.id} - {self.product.name} - {self.status}'
+    
+    
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    address = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username

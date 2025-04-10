@@ -13,13 +13,13 @@
             background-color: #f7f7f7;
             color: #333;
         }
-
+        
         h1 {
             text-align: center;
             color: #2874f0;
             margin-top: 20px;
         }
-
+        
         /* Navigation Bar */
         .navi {
             background-color: #2874f0;
@@ -29,41 +29,54 @@
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
+        
         .left {
             display: flex;
             align-items: center;
         }
-
+        
         .ele {
             margin: 0 15px;
             cursor: pointer;
             font-size: 16px;
         }
-
+        
+        .navi .left a {
+            text-decoration: none;
+            color: white;
+            margin: 0 15px;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        
+        .navi .left a:hover {
+            color: #fb641b;
+            text-decoration: underline;
+        }
+        
         .search {
             margin-left: 20px;
         }
-
+        
         .ss {
             padding: 8px;
             border: none;
             border-radius: 2px;
             width: 200px;
         }
-
+        
         .ice {
             display: flex;
             align-items: center;
             margin-left: 20px;
         }
-
+        
         .ice1 {
             color: white;
             margin: 0 5px;
             font-size: 16px;
         }
-
+        
         button {
             background-color: #fb641b;
             color: white;
@@ -73,25 +86,11 @@
             cursor: pointer;
             font-size: 16px;
         }
-
+        
         button:hover {
             background-color: #e55b16;
         }
-
-        /* Navigation Bar Links */
-        .navi .left a {
-            text-decoration: none; /* Remove underline from links */
-            color: white; /* Set link color to white */
-            margin: 0 15px; /* Add spacing between links */
-            font-size: 16px; /* Set font size */
-            transition: color 0.3s ease; /* Smooth transition for hover effect */
-        }
-
-        .navi .left a:hover {
-            color: #fb641b; /* Change color on hover */
-            text-decoration: underline; /* Add underline on hover */
-        }
-
+        
         /* Footer */
         footer {
             background-color: #172337;
@@ -99,36 +98,36 @@
             padding: 20px 0;
             margin-top: 40px;
         }
-
+        
         .footer-block1 {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-
+        
         .container {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
         }
-
+        
         .colm1, .colm2, .colm3, .colm4 {
             flex: 1;
             min-width: 200px;
             margin: 10px 0;
         }
-
+        
         .foot-logo {
             font-size: 24px;
             font-weight: bold;
             color: #2874f0;
         }
-
+        
         .foot-icon {
             display: flex;
             margin: 10px 0;
         }
-
+        
         .foot-icon div {
             background-color: #2874f0;
             color: white;
@@ -137,65 +136,73 @@
             border-radius: 50%;
             cursor: pointer;
         }
-
+        
         .foot-icon div:hover {
             background-color: #1e5bbf;
         }
-
+        
         .colm2 ul, .colm3 ul, .colm4 ul {
             list-style: none;
             padding: 0;
         }
-
+        
         .colm2 ul li, .colm3 ul li, .colm4 ul li {
             margin: 10px 0;
             cursor: pointer;
         }
-
+        
         .colm2 ul li:hover, .colm3 ul li:hover, .colm4 ul li:hover {
             text-decoration: underline;
         }
-
+        
         .colm4 ul li a {
             color: white;
             text-decoration: none;
         }
-
+        
         .colm4 ul li a:hover {
             text-decoration: underline;
         }
+        
 
+        
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
                 align-items: center;
             }
-
+        
             .left {
                 flex-direction: column;
                 align-items: flex-start;
             }
-
+        
             .ele, .search, .ice, button {
                 margin: 10px 0;
             }
-
+        
             .ss {
                 width: 100%;
             }
         }
+        
+        
     </style>
 </head>
 <body>
     <div class="navi">
         <div class="left">
-            <a href="{% url 'firstpage' %}"><div class="ele">Shop Now</div></a>
-            <a href="{% url 'review' %}"><div class="ele">Reviews</div></a>
-            <a href="{% url 'aboutus' %}"><div class="ele">About Us</div></a>
-            <div class="ele">Contact Us</div>
+            <a href="{% url 'firstpage' %}"><div class="ele">Home</div></a>
+            <a href="{% url 'allproducts' %}"><div class="ele">shope now</div></a>
+           <a href="{% url 'review' %}"><div class="ele">Reviews</div></a>
+           <a href="{% url 'aboutus' %}"><div class="ele">About Us</div></a>
+           <a href="{% url 'cart_view' %}"><div class="ele">views cart</div></a> 
             <div class="search">
-                <input class="ss" type="search" placeholder="Product Code" id="first name" name="firstname" maxlength="50px" required>
+                <form method="GET" action="{% url 'search_results' %}">
+                    <input type="text" name="q" placeholder="Search products..." required>
+                    <button type="submit">Search</button>
+                </form>
             </div>
             <div class="ice">
                 <div class="ice1">F</div>
@@ -208,7 +215,28 @@
             {% endif %}
         </div>
     </div> 
-    <h1>about us</h1>
+    <h1>About Us</h1>
+    <div class="container">
+        <div class="content">
+            <h3>Welcome to Shoe Cart</h3>
+            <p>At Shoe Cart, we are dedicated to bringing you the best quality footwear at affordable prices. Our collection includes stylish, comfortable, and durable shoes for every occasion.</p>
+            
+            <h3>Our Mission</h3>
+            <p>Our mission is to provide high-quality footwear that combines style and comfort. We aim to offer a diverse selection of shoes that cater to every customer's needs.</p>
+            
+            <h3>Why Choose Us?</h3>
+            <ul>
+                <li>Wide Selection – Trendy and comfortable shoes for all occasions.</li>
+                <li>Affordable Prices – Great deals without compromising on quality.</li>
+                <li>Customer Satisfaction – Easy shopping experience and excellent support.</li>
+            </ul>
+            
+            <h3>Contact Us</h3>
+            <p><strong>📍 Location:</strong> Kureekkadu, Ernakulam, Kerala</p>
+            <p><strong>📞 Call Us:</strong> <a href="tel:+918606570657">+91-86065 70657</a></p>
+            <p><strong>📧 Email:</strong> <a href="mailto:support@shoecart.com">support@shoecart.com</a></p>
+        </div>
+    </div>
     <footer>
         <div class="footer-block1">
             <div class="container">

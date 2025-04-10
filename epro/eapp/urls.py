@@ -29,6 +29,14 @@ urlpatterns = [
    path('buy_now/<int:product_id>/', views.buy_now, name='buy_now'),
    path('order_confirmation/<int:order_id>/', views.order_confirmation, name='order_confirmation'),
    path('search/', views.search_results, name='search_results'),
+   path('update_order/<int:order_id>/',views.update_order_status, name='update_order'),
+   path('users/', views.admin_users, name='admin_users'),
+   path('orders/', views.admin_orders, name='admin_orders'),
+   path('allproducts/', views.allproducts, name='allproducts'),
+    path('my-profile/', views.my_profile, name='my_profile'),  # User Profile page
+   #  path('logout/', views.logout_view, name='logout'),  # User Logout page
+   # path('users',views.usres_g,name='usersview'),
+   
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

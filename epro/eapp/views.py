@@ -97,15 +97,27 @@ def passwordreset(request):
 #     gallery_images = Gallery.objects.all()
 #     return render(request, "firstpage.html", {"gallery_images": gallery_images})
 def firstpage(request): 
+    # Get the latest 4 products by ordering them by ID in descending order
+    gallery_images = Gallery.objects.all().order_by('-id')[:4]  # This will give you the latest 4 products by ID
+    if request.user.is_authenticated:
+        cart_item_count = Cart.objects.filter(user=request.user).count()
+    else:
+        cart_item_count = 0 
+
+    return render(request, "firstpage.html", {
+        "gallery_images": gallery_images,
+        "cart_item_count": cart_item_count
+    })
+def allproducts(request): 
     gallery_images = Gallery.objects.all()  
     if request.user.is_authenticated:
         cart_item_count = Cart.objects.filter(user=request.user).count()
     else:
         cart_item_count = 0 
-    return render(request, "firstpage.html", {
+    return render(request, "allproduct.html", {
         "gallery_images": gallery_images,
         "cart_item_count": cart_item_count
-    })
+    })   
 def usersignup(request):
     if request.POST:
         email = request.POST.get('email')
@@ -169,6 +181,13 @@ def adminpage(request):
     data = Gallery.objects.all()
     gallery_images = Gallery.objects.filter(user=request.user)
     return render(request,'adminpage.html',{"gallery_images": gallery_images})
+def admin_users(request):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        # Redirect non-admin users or unauthenticated users
+        return redirect('loginuser')
+
+    users = User.objects.all()  # Fetch all users
+    return render(request, 'admin_users.html', {'users': users})
 def delete_g(request,id):
     feeds=Gallery.objects.filter(pk=id)
     feeds.delete()
@@ -187,10 +206,10 @@ def edit_g(request, id):
         myimage = request.FILES['image']  
         name=request.POST.get("todo")
         price=request.POST.get("date")
-        # todo311=request.POST.get("course")
         quanty=request.POST.get("quant")
         mod=request.POST.get("model") 
         off=request.POST.get("offers")
+        print(name,price,quanty,mod,off,myimage)
         
         if not name or not price or not quanty or not mod or not off:
             messages.error(request, "All fields are required.")
@@ -207,9 +226,7 @@ def edit_g(request, id):
         gallery_image.save()
 
         messages.success(request, "Gallery item updated successfully!")
-        return redirect('sellerfirstpage')
-
-    # Handle GET request to display the form
+        return redirect('adminpage')
     return render(request, 'index.html', {'data1': gallery_image})
 # @login_required(login_url='userlogin')  # Redirect to your login page
 # def add_to_cart(request, id):
@@ -223,30 +240,63 @@ def edit_g(request, id):
 #         cart_item.quantity += 1
 #         cart_item.save()
 #     return redirect('cart_view')
-@login_required(login_url='userlogin')
+# @login_required(login_url='userlogin')
+# def add_to_cart(request, id):
+#     if 'username' in request.session:
+#         try:
+#             product = Gallery.objects.get(id=id)
+#         except Gallery.DoesNotExist:
+        
+#             return redirect('product_not_found')  
+    
+#         cart_item, created = Cart.objects.get_or_create(
+#             user=request.user,
+#             product=product,
+        
+#         )
+#         if not created:
+#             if cart_item.product.quantity > cart_item.quantity:
+#                 cart_item.quantity += 1
+#             else:
+#                 messages.error(request, "out of stock.")
+#                 return redirect('cart_view')
+#         else:
+#             cart_item.quantity = 1
+#             cart_item.save()
+#             return redirect('cart_view')
+
+
+
+@login_required(login_url='userlogin')  # Ensure user is logged in
 def add_to_cart(request, id):
-    if 'username' in request.session:
+    if 'username' in request.session:  # Check if session contains 'username'
         try:
             product = Gallery.objects.get(id=id)
         except Gallery.DoesNotExist:
-        
-            return redirect('product_not_found')  
-    
+            messages.error(request, "Product not found.")
+            return redirect('product_not_found')
+
+        # Check if product is already in the cart
         cart_item, created = Cart.objects.get_or_create(
             user=request.user,
-            product=product,
-        
+            product=product
         )
+
         if not created:
             if cart_item.product.quantity > cart_item.quantity:
                 cart_item.quantity += 1
+                cart_item.save()
             else:
-                messages.error(request, "out of stock.")
-                return redirect('cart_view')
+                messages.error(request, "Out of stock.")
         else:
             cart_item.quantity = 1
             cart_item.save()
-            return redirect('cart_view')
+
+        return redirect('cart_view')  # Make sure a response is always returned
+
+    else:
+        messages.error(request, "You must be logged in to add items to the cart.")
+        return redirect('userlogin')  # Redirect to login page if not logged in
 
 
 # @login_required
@@ -293,7 +343,7 @@ def decrement_cart(request, id):
 #     total_price = sum(item.product.price * item.quantity for item in cart_items)
 #     return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
-@login_required
+@login_required(login_url='userlogin')
 def cart_view(request):
     cart_items = Cart.objects.filter(user=request.user)
     total_price = sum(item.product.price * item.quantity for item in cart_items)
@@ -306,60 +356,35 @@ def delete_cart(request, id):
     cart_item.delete()
     return redirect('cart_view')
 
-@login_required
+@login_required(login_url='userlogin')
 def checkout(request):
+    # user = request.user
+    # cart_items = Cart.objects.filter(user=user)
+
+    # if not cart_items.exists():
+    #     messages.error(request, "Your cart is empty.")
+    #     return redirect('cart_view')
+
+    # # Calculate total price
+    # total_price = sum(item.product.price * item.quantity for item in cart_items)
+
+    # if request.method == "POST":
+    #     # Create an order for the user
+    #     order = Order.objects.create(user=user, total_price=total_price)
+    #     order.products.set(cart_items)  # Add all cart items to the order
+    #     order.save()
+
+    #     # Clear the cart after placing order
+    #     cart_items.delete()
+
+    #     messages.success(request, "Order placed successfully!")
+    #     return redirect('order_success')  # Redirect to a success page
+
+    # return render(request, 'checkout.html', {'cart_items': cart_items, 'total_price': total_price})
     return render(request, 'checkout.html')
 def sample(request):
     return redirect('add_to_cart')
 
-@login_required
-def buy_now(request, product_id):
-    if 'username' in request.session:
-        product = get_object_or_404(Gallery, id=product_id)
-
-        if request.method == "POST":
-            quantity = int(request.POST.get("quantity", 1))
-            address = request.POST.get("address")
-            payment_method = request.POST.get("payment_method")
-            total_price = product.price * quantity  
-
-            order = Order.objects.create(
-                user=request.user,
-                product=product,
-                quantity=quantity,
-                total_price=total_price,
-                address=address,
-                payment_method=payment_method,
-                status="Pending"
-            )
-
-            # Send email to admin
-            admin_email = "admin@example.com"  # Replace with the admin's email
-            subject = f"New Order Placed - {order.id}"
-            message = f"""
-            New Order Placed!
-
-            Order ID: {order.id}
-            User: {request.user.username}
-            Product: {product.name}
-            Quantity: {quantity}
-            Total Price: ₹{total_price}
-            Address: {address}
-            Payment Method: {payment_method}
-
-            Please process the order in the admin panel.
-            """
-
-            send_mail(subject, message, settings.EMAIL_HOST_USER, [admin_email])
-
-            messages.success(request, "Order placed successfully! An email has been sent to the admin.")
-
-            return redirect('order_confirmation', order_id=order.id)
-
-        return render(request, "buy_now.html", {"product": product})
-
-    else:
-        return redirect('userlogin')
 # @login_required
 # def buy_now(request, product_id):
 #     if 'username' in request.session:
@@ -367,17 +392,10 @@ def buy_now(request, product_id):
 
 #         if request.method == "POST":
 #             quantity = int(request.POST.get("quantity", 1))
-
-#             # Check if requested quantity is within available stock
-#             if quantity > product.quantity:
-#                 messages.error(request, "Out of stock! You cannot buy more than the available quantity.")
-#                 return redirect('product', id=product_id)  # Redirect back to product page
-
 #             address = request.POST.get("address")
 #             payment_method = request.POST.get("payment_method")
 #             total_price = product.price * quantity  
 
-#             # Create the order
 #             order = Order.objects.create(
 #                 user=request.user,
 #                 product=product,
@@ -388,12 +406,8 @@ def buy_now(request, product_id):
 #                 status="Pending"
 #             )
 
-#             # Deduct stock quantity
-#             product.quantity -= quantity
-#             product.save()
-
 #             # Send email to admin
-#             admin_email = "unni65129@gmail.com"  # Replace with actual admin email
+#             admin_email = "unni65129@gmail.com"  # Replace with the admin's email
 #             subject = f"New Order Placed - {order.id}"
 #             message = f"""
 #             New Order Placed!
@@ -408,17 +422,72 @@ def buy_now(request, product_id):
 
 #             Please process the order in the admin panel.
 #             """
+
 #             send_mail(subject, message, settings.EMAIL_HOST_USER, [admin_email])
 
-#             messages.success(request, "Order placed successfully!")
+#             messages.success(request, "Order placed successfully! An email has been sent to the admin.")
+
 #             return redirect('order_confirmation', order_id=order.id)
 
 #         return render(request, "buy_now.html", {"product": product})
 
 #     else:
 #         return redirect('userlogin')
+def buy_now(request, product_id):
+    if 'username' in request.session:
+        product = get_object_or_404(Gallery, id=product_id)
 
+        if request.method == "POST":
+            quantity = int(request.POST.get("quantity", 1))
+            address = request.POST.get("address")
+            payment_method = request.POST.get("payment_method")
 
+            # Check if stock is available
+            if quantity > product.quantity:
+                messages.error(request, "Not enough stock available.")
+                return redirect('buy_now', product_id=product.id)
+
+            total_price = product.price * quantity  
+
+            # Create order
+            order = Order.objects.create(
+                user=request.user,
+                product=product,
+                quantity=quantity,
+                total_price=total_price,
+                address=address,
+                payment_method=payment_method,
+                status="Pending"
+            )
+
+            # Reduce product stock
+            product.quantity -= quantity
+            product.save()
+
+            # Send email to admin
+            admin_email = "unni65129@gmail.com"  
+            subject = f"New Order Placed - {order.id}"
+            message = f"""
+            New Order Placed!
+
+            Order ID: {order.id}
+            User: {request.user.username}
+            Product: {product.name}
+            Quantity: {quantity}
+            Total Price: ₹{total_price}
+            Address: {address}
+            Payment Method: {payment_method}
+
+            Please process the order in the admin panel.
+            """
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [admin_email])
+
+            messages.success(request, "Order placed successfully! An email has been sent to the admin.")
+            return redirect('order_confirmation', order_id=order.id)
+
+        return render(request, "buy_now.html", {"product": product})
+    else:
+        return redirect('userlogin')
 
 @login_required
 def order_confirmation(request, order_id):
@@ -428,3 +497,62 @@ def search_results(request):
     query = request.GET.get('q')
     results = Gallery.objects.filter(name__icontains=query) if query else None
     return render(request, 'search_results.html', {'results': results, 'query': query}) 
+
+
+def update_order_status(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == "POST":
+        new_status = request.POST.get("status")
+        order.status = new_status
+        order.save()
+        return redirect("adminpage")  # Redirect back to admin page
+
+    return render(request, "update_order.html", {"order": order})
+# def usres_g(request):
+#     return render(request,'users.html')
+def admin_orders(request):
+    orders = Order.objects.select_related('user', 'product').all()  # Fetch orders with related user & product
+
+    return render(request, 'admin_orders.html', {"orders": orders})
+# def admin_orders(request):
+#     orders = Order.objects.select_related('user', 'product')  # Fetch orders with related user & product
+#     return render(request, 'admin_orders.html', {'orders': orders})
+
+
+
+
+@login_required(login_url='userlogin')
+def my_profile(request):
+    user = request.user
+
+    # Handle form submission for updating user details
+    if request.method == 'POST':
+        # Get the data from the form submission
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+
+        # Update the user's profile fields
+        user.username = username if username else user.username
+        user.email = email if email else user.email
+        if hasattr(user, 'userprofile'):
+            user.userprofile.address = address if address else user.userprofile.address
+            user.userprofile.save()
+
+        # Save the updated user details
+        user.save()
+
+        # Show a success message
+        messages.success(request, "Profile updated successfully.")
+        return redirect('my_profile')  # Redirect back to the profile page
+
+    # If the request method is GET, show the current user details
+    return render(request, 'my_profile.html', {'user': user})
+
+
+
+
+# def logout_view(request):
+#     logout(request)
+#     return redirect('firstpage')
