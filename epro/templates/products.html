@@ -358,6 +358,9 @@
                     <p>{{ i.price }}</p>
                     <p>{{ i.offers }}</p>
                 </div>
+
+                {% if i.quantity > 0 %}
+
                 {% if i.id in cart_product_ids %}
                     <a href="{% url 'cart_view' %}"><button>Go to Cart</button></a>
                 {% else %}
@@ -366,6 +369,13 @@
                 <a href="{% url 'buy_now' i.id %}">
                     <button class="buy-now-btn">Buy Now</button>
                 </a>
+
+                {% else %}
+                        
+                        <p style="color: RED;">out of stock</p>
+
+                        {% endif %}
+
             {% endfor %}
         </div>
     </div>

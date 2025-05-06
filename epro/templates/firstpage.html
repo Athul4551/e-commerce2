@@ -13,7 +13,7 @@
         <div class="left">
             <a href="{% url 'firstpage' %}"><div class="ele">Home</div></a>
             <a href="{% url 'allproducts' %}"><div class="ele">shope now</div></a>
-           <a href="{% url 'review' %}"><div class="ele">Reviews</div></a>
+           <!-- <a href="{% url 'review' %}"><div class="ele">Reviews</div></a> -->
            <a href="{% url 'aboutus' %}"><div class="ele">About Us</div></a>
            <a href="{% url 'cart_view' %}"><div class="ele">views cart</div></a> 
             <div class="search">
@@ -22,11 +22,11 @@
                     <button type="submit">Search</button>
                 </form>
             </div>
-            <div class="ice">
+            <!-- <div class="ice">
                 <div class="ice1">F</div>
                 <div class="ice1">IN</div>
-            </div>
-            <a href="{% url 'my_profile' %}"><button>my profile</button></a>
+            </div> -->
+            <a href="{% url 'profile' %}"><button>my profile</button></a>
             {% if 'username' in request.session %}
             <div><a href="{% url 'logout' %}"><button>Logout</button></a></div>
             {% else %}
@@ -89,6 +89,16 @@
                         <p>{{ i.name }}</p>
                         <p>₹{{ i.price }}</p>
                         <p>{{ i.model }}</p>
+                        
+                        {% if i.quantity > 0 %}
+
+                        <p style="color: GREEN;">in stock</p>
+
+                        {% else %}
+                        
+                        <p style="color: RED;">out of stock</p>
+
+                        {% endif %}
 
                     </div>
                 </div></a>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>shose cart</title>
     <style>
         /* General Styles */
         body {
@@ -50,7 +50,7 @@
         }
         
         .navi .left a:hover {
-            color: #fb641b;
+            color: #ffd700;
             text-decoration: underline;
         }
         
@@ -78,8 +78,8 @@
         }
         
         button {
-            background-color: #fb641b;
-            color: white;
+            background-color:white;
+            color:  #2874f0;
             border: none;
             padding: 8px 16px;
             border-radius: 2px;
@@ -88,7 +88,7 @@
         }
         
         button:hover {
-            background-color: #e55b16;
+            background-color: #ffd700;;
         }
         
         /* Footer */
@@ -195,19 +195,19 @@
         <div class="left">
             <a href="{% url 'firstpage' %}"><div class="ele">Home</div></a>
             <a href="{% url 'allproducts' %}"><div class="ele">shope now</div></a>
-           <a href="{% url 'review' %}"><div class="ele">Reviews</div></a>
+           {% comment %} <a href="{% url 'review' %}"><div class="ele">Reviews</div></a> {% endcomment %}
            <a href="{% url 'aboutus' %}"><div class="ele">About Us</div></a>
            <a href="{% url 'cart_view' %}"><div class="ele">views cart</div></a> 
-            <div class="search">
+            {% comment %} <div class="search">
                 <form method="GET" action="{% url 'search_results' %}">
                     <input type="text" name="q" placeholder="Search products..." required>
                     <button type="submit">Search</button>
                 </form>
-            </div>
-            <div class="ice">
+            </div> {% endcomment %}
+            {% comment %} <div class="ice">
                 <div class="ice1">F</div>
                 <div class="ice1">IN</div>
-            </div>
+            </div> {% endcomment %}
             {% if 'username' in request.session %}
             <div><a href="{% url 'logout' %}"><button>Logout</button></a></div>
             {% else %}

@@ -118,6 +118,15 @@ form input[type="submit"]:hover {
         <input type="password" name="password" id="" placeholder="password">
         <input type="password" name="confpassword" id="" placeholder="confirmpassword">
         <input type="submit" value="submit">
+
+        {% if messages %}
+        <!-- <div class="alert alert-success mt-3"> -->
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        <!-- </div> -->
+        {% endif %}
     </form>
+    
 </body>
 </html>

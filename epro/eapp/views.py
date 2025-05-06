@@ -433,7 +433,7 @@ def sample(request):
 
 #     else:
 #         return redirect('userlogin')
-def buy_now(request, product_id):
+def buy_now(request, product_id,):
     if 'username' in request.session:
         product = get_object_or_404(Gallery, id=product_id)
 
@@ -522,34 +522,212 @@ def admin_orders(request):
 
 
 
+# @login_required(login_url='userlogin')
+# def my_profile(request):
+#     user = request.user
+
+#     # Handle form submission for updating user details
+#     if request.method == 'POST':
+#         # Get the data from the form submission
+#         username = request.POST.get('username')
+#         email = request.POST.get('email')
+#         address = request.POST.get('address')
+
+#         # Update the user's profile fields
+#         user.username = username if username else user.username
+#         user.email = email if email else user.email
+#         if hasattr(user, 'userprofile'):
+#             user.userprofile.address = address if address else user.userprofile.address
+#             user.userprofile.save()
+
+#         # Save the updated user details
+#         user.save()
+
+#         # Show a success message
+#         messages.success(request, "Profile updated successfully.")
+#         return redirect('my_profile')  # Redirect back to the profile page
+
+#     # If the request method is GET, show the current user details
+#     return render(request, 'my_profile.html', {'user': user})
+
+
+
+
 @login_required(login_url='userlogin')
-def my_profile(request):
-    user = request.user
+def profile_view(request):
+    """View to display user profile with addresses"""
+    # Get all addresses for the logged-in user
+    addresses = Address.objects.filter(user=request.user)
+    
+    context = {
+        'addresses': addresses,
+        'email': request.user.email, 
+    }
+    return render(request, 'profile.html', context)
 
-    # Handle form submission for updating user details
+@login_required
+def add_address(request):
+    """View to add a new address without using Django forms"""
     if request.method == 'POST':
-        # Get the data from the form submission
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
+        name = request.POST.get('name', '')
+        address = request.POST.get('address', '')
+        phone = request.POST.get('phone', '')
+        
+        # Basic validation
+        errors = {}
+        if not name:
+            errors['name'] = 'Name is required.'
+        if not address:
+            errors['address'] = 'Address is required.'
+        if not phone:
+            errors['phone'] = 'Phone number is required.'
+        
+        if not errors:
+            # Create new address
+            Address.objects.create(
+                user=request.user,
+                name=name,
+                address=address,
+                phone=phone
+            )
+            messages.success(request, 'Address added successfully!')
+            return redirect('profile')
+        else:
+            # If there are errors, pass them to the template
+            return render(request, 'address_form.html', {
+                'errors': errors,
+                'name': name,
+                'address': address,
+                'phone': phone,
+                'action': 'Add'
+            })
+    
+    return render(request, 'address_form.html', {'action': 'Add'})
 
-        # Update the user's profile fields
-        user.username = username if username else user.username
-        user.email = email if email else user.email
-        if hasattr(user, 'userprofile'):
-            user.userprofile.address = address if address else user.userprofile.address
-            user.userprofile.save()
+@login_required
+def edit_address(request, address_id):
+    """View to edit an existing address without using Django forms"""
+    # Get address or return 404 if not found
+    address_obj = get_object_or_404(Address, id=address_id, user=request.user)
+    
+    if request.method == 'POST':
+        name = request.POST.get('name', '')
+        address = request.POST.get('address', '')
+        phone = request.POST.get('phone', '')
+        
+        # Basic validation
+        errors = {}
+        if not name:
+            errors['name'] = 'Name is required.'
+        if not address:
+            errors['address'] = 'Address is required.'
+        if not phone:
+            errors['phone'] = 'Phone number is required.'
+        
+        if not errors:
+            # Update address
+            address_obj.name = name
+            address_obj.address = address
+            address_obj.phone = phone
+            address_obj.save()
+            messages.success(request, 'Address updated successfully!')
+            return redirect('profile')
+        else:
+            # If there are errors, pass them to the template
+            return render(request, 'address_form.html', {
+                'errors': errors,
+                'name': name,
+                'address': address,
+                'phone': phone,
+                'action': 'Edit'
+            })
+    
+    # Pre-fill form with existing data
+    return render(request, 'address_form.html', {
+        'name': address_obj.name,
+        'address': address_obj.address,
+        'phone': address_obj.phone,
+        'action': 'Edit'
+    })
 
-        # Save the updated user details
-        user.save()
+@login_required
+def delete_address(request, address_id):
+    """View to delete an address"""
+    address = get_object_or_404(Address, id=address_id, user=request.user)
+    
+    if request.method == 'POST':
+        address.delete()
+        messages.success(request, 'Address deleted successfully!')
+        return redirect('profile')
+    
+    return render(request, 'profile/confirm_delete.html', {'address': address})
+@login_required
+def edit_email(request):
+    """View to edit user's email"""
+    user = request.user
+    
+    if request.method == 'POST':
+        email = request.POST.get('email', '')
+        
+        # Basic validation
+        errors = {}
+        if not email:
+            errors['email'] = 'Email is required.'
+        elif '@' not in email:
+            errors['email'] = 'Please enter a valid email address.'
+            
+        if not errors:
+            # Update email
+            user.email = email
+            user.save()
+            messages.success(request, 'Email updated successfully!')
+            return redirect('profile')
+        else:
+            # If there are errors, pass them to the template
+            return render(request, 'email_form.html', {
+                'errors': errors,
+                'email': email
+            })
+    
+    # Pre-fill form with existing email
+    return render(request, 'email_form.html', {
+        'email': user.email
+    })
 
-        # Show a success message
-        messages.success(request, "Profile updated successfully.")
-        return redirect('my_profile')  # Redirect back to the profile page
-
-    # If the request method is GET, show the current user details
-    return render(request, 'my_profile.html', {'user': user})
-
+@login_required
+def edit_username(request):
+    """View to edit user's username"""
+    user = request.user
+    
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        
+        # Basic validation
+        errors = {}
+        if not username:
+            errors['username'] = 'Username is required.'
+        elif len(username) < 4:
+            errors['username'] = 'Username should be at least 4 characters long.'
+        elif User.objects.filter(username=username).exists():
+            errors['username'] = 'This username is already taken.'
+            
+        if not errors:
+            # Update username
+            user.username = username
+            user.save()
+            messages.success(request, 'Username updated successfully!')
+            return redirect('profile')
+        else:
+            # If there are errors, pass them to the template
+            return render(request, 'profile/username_form.html', {
+                'errors': errors,
+                'username': username
+            })
+    
+    # Pre-fill form with existing username
+    return render(request, 'username_form.html', {
+        'username': user.username
+    })
 
 
 

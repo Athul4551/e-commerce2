@@ -43,9 +43,16 @@ class Order(models.Model):
         return f'Order {self.id} - {self.product.name} - {self.status}'
     
     
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address = models.TextField(blank=True, null=True)
+# class UserProfile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     address = models.TextField(blank=True, null=True)
 
-    def __str__(self):
-        return self.user.username
+#     def __str__(self):
+#         return self.user.username
+
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name=models.CharField(max_length=225)
+    address=models.TextField()
+    phone=models.CharField(max_length=12)
