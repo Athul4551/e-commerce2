@@ -15,6 +15,11 @@
       --text-gray: #212121;
       --success-green: #388e3c;
   }
+
+  a{
+      text-decoration: none;
+      style:none;
+  }
   
   * {
       margin: 0;
@@ -150,6 +155,28 @@
 }
 
 
+
+/* New and updated icon class */
+.icon {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    transition: all 0.3s ease;
+}
+
+.icon svg.bi-person-circle {
+    color: white;
+    width: 32px; /* Increased size */
+    height: 32px; /* Increased size */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.icon:hover svg.bi-person-circle {
+    color: #fcfcfc; /* Orange accent on hover */
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+
   
     
     .cart-container {
@@ -276,6 +303,141 @@
         text-align: center;
       }
     }
+
+
+    /* Footer */
+        footer {
+            background: #172337;
+            color: white;
+            padding: 48px 24px;
+            margin-top: 48px;
+        }
+
+        .container.footer {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+        }
+
+        .foot-icon {
+            display: flex;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .foot-icon div {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .foot-icon div:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer ul li {
+            margin-bottom: 12px;
+            color: #878787;
+        }
+
+        footer h4 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .foot-logo {
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--flipkart-blue);
+            margin-bottom: 25px;
+        }
+
+        /* Footer link styles */
+        footer a {
+            color: #878787;
+            transition: color 0.2s ease;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navi {
+                padding: 12px;
+            }
+
+            .left {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .search {
+                max-width: 100%;
+                margin-left: 0;
+            }
+
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .hero p {
+                font-size: 1em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .container.footer {
+                grid-template-columns: 1fr;
+            }
+
+            .foot-icon {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8em;
+            }
+
+            .content h2 {
+                font-size: 1.5em;
+            }
+
+            .content p, .content ul li {
+                font-size: 1em;
+            }
+
+            .team-member {
+                width: 100%;
+            }
+
+            button {
+                padding: 8px 16px;
+            }
+
+            .ele {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+        }
   </style>
 </head>
 <body>
@@ -284,7 +446,7 @@
     <div class="left">
         <a href="{% url 'firstpage' %}"><div class="ele">Home</div></a>
         <a href="{% url 'allproducts' %}"><div class="ele">shope now</div></a>
-       <a href="{% url 'review' %}"><div class="ele">Reviews</div></a>
+       <!-- <a href="{% url 'review' %}"><div class="ele">Reviews</div></a> -->
        <a href="{% url 'aboutus' %}"><div class="ele">About Us</div></a>
        <a href="{% url 'cart_view' %}"><div class="ele">views cart</div></a> 
         <div class="search">
@@ -297,12 +459,17 @@
             <div class="ice1">F</div>
             <div class="ice1">IN</div>
         </div> -->
-        <a href="{% url 'my_profile' %}"><button>my profile</button></a>
-        {% if 'username' in request.session %}
+        <!-- {% comment %} <a href="{% url 'my_profile' %}"><button>my profile</button></a> {% endcomment %} -->
+        <!-- {% if 'username' in request.session %}
         <div><a href="{% url 'logout' %}"><button>Logout</button></a></div>
         {% else %}
         <div><a href="{% url 'userlogin' %}"><button>Login</button></a></div>
-        {% endif %}
+        {% endif %} -->
+
+        <a href="{% url 'profile' %}" class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+</svg></a>
     </div>
 </div>
 
@@ -335,6 +502,64 @@
     {% else %}
       <p>Your cart is empty.</p>
     {% endif %}
+
+
+
+  {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p class="success-msg">{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}  
   </div>
+
+ <footer>
+        <div class="container footer">
+            <div class="colm1">
+                <ul>
+                    <li class="foot-logo">Shoe Cart</li>
+                    <li class="foot-icon">
+                        <div class="f"><p>F</p></div>
+                        <div class="tw"><p>TW</p></div>
+                        <div class="in"><p>IN</p></div>
+                        <div class="x"><p>X</p></div>
+                    </li>
+                    <li>
+                        <p>© All rights reserved by Shoe Cart, Cochin, India.</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="colm2">
+                <ul>
+                    <li><h4>Solutions</h4></li>
+                    <li><a href="#">My Account</a></li>
+                    <li><a href="#">Track Your Order</a></li>
+                    <li><a href="#">Order History</a></li>
+                    <li><a href="#">Payment Methods</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="colm3">
+                <ul>
+                    <li><h4>About Us</h4></li>
+                    <li><a href="{% url 'aboutus' %}">About Us</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Return Policy</a></li>
+                    <li><a href="#">Site Map</a></li>
+                </ul>
+            </div>
+            <div class="colm4">
+                <ul>
+                    <li><h4>Contact Us</h4></li>
+                    <li>Kureekkadu, Ernakulam, Kerala</li>
+                    <li><a href="tel:+918606570657">+91-86065 70657</a></li>
+                    <li>Mon - Sat / 9:00 AM - 6:00 PM</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>

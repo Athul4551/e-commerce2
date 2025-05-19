@@ -103,6 +103,26 @@ body {
     display: flex;
     gap: 12px;
 }
+/* New and updated icon class */
+.icon {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    transition: all 0.3s ease;
+}
+
+.icon svg.bi-person-circle {
+    color: white;
+    width: 32px; /* Increased size */
+    height: 32px; /* Increased size */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.icon:hover svg.bi-person-circle {
+    color: #fcfcfc; /* Orange accent on hover */
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
 
 .ice1 {
     background: white;
@@ -257,7 +277,7 @@ footer h4 {
     margin-bottom: 20px;
 }
 
-button {
+.button {
     background: white;
     color: var(--flipkart-blue);
     border: none;
@@ -268,7 +288,7 @@ button {
     transition: all 0.2s ease;
 }
 
-button:hover {
+.button:hover {
     background: var(--flipkart-yellow);
 }
 /* Add link styling */

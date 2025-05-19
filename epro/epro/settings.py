@@ -136,3 +136,8 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'unni65129@gmail.com'
 EMAIL_HOST_PASSWORD = 'twmf pppx bkct gtkb'
+
+
+
+RAZORPAY_KEY_ID = "rzp_test_MsfjTzh5AEbIcA"
+RAZORPAY_KEY_SECRET = "zkxCZXk1QeH5QdHlrx3KxYUE"

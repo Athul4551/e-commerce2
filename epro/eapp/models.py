@@ -1,16 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
+from django.utils.translation import gettext_lazy as _
+from .constants import PaymentStatus
 
 class Gallery(models.Model):
     feedimage = models.ImageField(upload_to='gallery_images/')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     model=models.CharField(max_length=400)
-    offers=models.CharField(max_length=400)
-    price = models.DecimalField(max_digits=10, decimal_places=2)  
+    
+    discription=models.TextField(max_length=400, null=True, blank=True)
+    offers=models.CharField(max_length=400, null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2) 
+     
     # delivary = models.CharField(max_length=100)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    image1=models.FileField(upload_to='gallery_images/', null=True, blank=True)
+    image2=models.FileField(upload_to='gallery_images/', null=True, blank=True)
+    image3=models.FileField(upload_to='gallery_images/', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -38,6 +47,28 @@ class Order(models.Model):
     payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='COD')
     status = models.CharField(max_length=50, default="Pending")  # Status: Pending, Completed, Cancelled
     created_at = models.DateTimeField(auto_now_add=True)
+    
+   
+    
+    # status = models.CharField(
+    #     max_length=50,
+    #     default=PaymentStatus.PENDING,
+    #     choices=[
+    #         (PaymentStatus.PENDING, 'Pending'),
+    #         (PaymentStatus.COMPLETED, 'Completed'),
+    #         (PaymentStatus.CANCELLED, 'Cancelled'),
+    #     ]
+    # )
+    
+    provider_order_id=models.CharField(
+        _(" Order ID"),max_length=40,blank=True,null=True
+        )
+    payment_id=models.CharField(
+        _("Payment ID"),max_length=36,blank=True,null=True
+    )
+    signature_id=models.CharField(
+        _("Signature ID"),max_length=128,blank=True,null=True
+    )
 
     def __str__(self):
         return f'Order {self.id} - {self.product.name} - {self.status}'
@@ -56,3 +87,7 @@ class Address(models.Model):
     name=models.CharField(max_length=225)
     address=models.TextField()
     phone=models.CharField(max_length=12)
+    
+    
+    
+    

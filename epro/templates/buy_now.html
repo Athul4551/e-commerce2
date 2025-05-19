@@ -1,258 +1,76 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-/* General Page Styles */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f1f3f6;
-    margin: 0;
-    padding: 0;
-}
-
-/* Navigation Bar */
-.navi {
-    background-color: #2874f0;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-}
-
-.left {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.left a {
-    text-decoration: none;
-}
-
-.ele {
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px 15px;
-    transition: 0.3s;
-    cursor: pointer;
-}
-
-.ele:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
-}
-
-.search input {
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    width: 200px;
-}
-
-/* Social Media Icons */
-.ice {
-    display: flex;
-    gap: 10px;
-}
-
-.ice1 {
-    background-color: white;
-    color: #2874f0;
-    padding: 6px 12px;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: 0.3s;
-    cursor: pointer;
-}
-
-.ice1:hover {
-    background-color: #1e5bb7;
-    color: white;
-}
-
-/* Form Styling */
-form {
-    background-color: white;
-    max-width: 450px;
-    margin: 50px auto;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
-}
-
-label {
-    display: block;
-    margin-top: 12px;
-    font-weight: bold;
-}
-
-input, textarea, select {
-    width: 100%;
-    padding: 12px;
-    margin-top: 6px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-input:focus, textarea:focus, select:focus {
-    border-color: #2874f0;
-    outline: none;
-}
-
-/* Button Styling */
-.btn {
-    background-color: #fb641b;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 20px;
-    transition: 0.3s;
-}
-
-.btn:hover {
-    background-color: #d84d0c;
-}
-
-/* Footer Styling */
-footer {
-    background-color: #172337;
-    color: white;
-    padding: 40px 0;
-    margin-top: 40px;
-}
-
-.footer-block1 .container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    text-align: center;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-h4 {
-    margin-bottom: 12px;
-    font-size: 18px;
-    color: #fff;
-}
-
-.foot-icon {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 10px 0;
-}
-
-.foot-icon div {
-    width: 35px;
-    height: 35px;
-    background-color: white;
-    color: #2874f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.foot-icon div:hover {
-    background-color: #ddd;
-}
-
-.colm2, .colm3, .colm4 {
-    margin-top: 20px;
-}
-
-.colm4 a {
-    color: #ddd;
-    text-decoration: none;
-}
-
-.colm4 a:hover {
-    color: #fff;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .navi {
-        flex-direction: column;
-        text-align: center;
-        padding: 15px;
-    }
-    
-    .left {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .container {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    form {
-        width: 90%;
-    }
-}
-
-
-    </style>
+    <title>Buy Now</title>
+   
+    <link rel="stylesheet" href="{% static 'css/buy_now.css' %}">
 </head>
 <body>
-    <div class="navi">
+     <div class="navi">
         <div class="left">
-            <a href="{% url 'firstpage' %}"><div class="ele">Shop Now</div></a>
-            <a href="{% url 'review' %}"><div class="ele">Reviews</div></a>
-            <a href="{% url 'aboutus' %}"><div class="ele">About Us</div></a>
-            <div class="ele">Contact Us</div>
+             <a href="{% url 'firstpage' %}"><div class="ele">Home</div></a>
+            <a href="{% url 'allproducts' %}"><div class="ele">shope now</div></a>
+           <!-- <a href="{% url 'review' %}"><div class="ele">Reviews</div></a> -->
+           <a href="{% url 'aboutus' %}"><div class="ele">About Us</div></a>
+           <a href="{% url 'cart_view' %}"><div class="ele">views cart</div></a> 
             <div class="search">
-                <input class="ss" type="search" placeholder="Product Code" id="first name" name="firstname" maxlength="50px" required>
+                <!-- <form method="GET" action="{% url 'search_results' %}">
+                    <input type="text" name="q" placeholder="Search products..." required>
+                    <button type="submit" class="button">Search</button>
+                </form> -->
             </div>
-            <div class="ice">
+            <!-- <div class="ice">
                 <div class="ice1">F</div>
                 <div class="ice1">IN</div>
-            </div>
-            {% if 'username' in request.session %}
+            </div> -->
+            <!-- {% if 'username' in request.session %}
             <div><a href="{% url 'logout' %}"><button>Logout</button></a></div>
             {% else %}
             <div><a href="{% url 'userlogin' %}"><button>Login</button></a></div>
-            {% endif %}
+            {% endif %} -->
+
+             <a href="{% url 'profile' %}" class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+</svg></a>
         </div>
-    </div> 
-    <form method="POST">
+    </div>
+
+    <form method="POST" id="order-form">
         {% csrf_token %}
         
-        <label for="quantity">Quantity:</label>
-        <input type="number" name="quantity" value="1" min="1" max="{{ product.quantity }}" required>
+        {% if messages %}
+            <div class="error-message">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
         
-        <label for="address" >Delivery Address:</label>
-        <textarea name="address" required></textarea>
+        <label for="name">Name:</label>
+        <input type="text" name="name" value="{% if current_address %}{{ current_address.name }}{% endif %}" required>
+        
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" value="1" min="1" max="{{ product.quantity|floatformat:0 }}" required>
+        
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        
+        <label for="address">Delivery Address:</label>
+        <textarea name="address" required>{% if current_address %}{{ current_address.name }}, {{ current_address.address }}, {{ current_address.phone }}{% endif %}</textarea>
 
         <label for="payment_method">Payment Method:</label>
-        <select name="payment_method">
+        <select name="payment_method" id="payment_method" required>
             <option value="COD">Cash on Delivery</option>
             <option value="ONLINE">Online Payment</option>
         </select>
 
-        <button type="submit" class="btn">Place Order</button>
+        <button type="submit" class="btn" id="place-order-btn">Place Order</button>
     </form>
+
+    <!-- Razorpay Checkout Script -->
     <footer>
         <div class="footer-block1">
             <div class="container">
@@ -301,6 +119,5 @@ h4 {
             </div>
         </div>
     </footer>
-    
 </body>
 </html>

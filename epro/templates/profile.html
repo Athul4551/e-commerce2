@@ -1,99 +1,83 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/myprofile.css' %}">
+{% extends 'base.html' %}
 
-    <title>Document</title>
-</head>
-<body>
-    
+{% block title %}My Profile{% endblock %}
 
-<div class="myprofile-container container">
-    <div class="myprofile-row row">
-        <div class="myprofile-col-12 col-12">
-            <div class="myprofile-card card">
-                <div class="myprofile-card-header card-header bg-primary text-white">
-                    <h3 class="myprofile-title">My Profile</h3>
-                </div>
-                <div class="myprofile-card-body card-body">
-                    <h4 class="myprofile-welcome">Welcome, {{ request.user.username }}</h4>
-
-                    <div class="myprofile-username-section mb-4">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <p class="myprofile-username"><strong>Username:</strong> {{ request.user.username }}</p>
-                            </div>
-                            <div class="col-md-4 text-end">
-                                <a href="{% url 'edit_username' %}" class="myprofile-edit-username-btn btn btn-primary btn-sm">
-                                    <i class="myprofile-edit-icon fa fa-edit"></i> Edit Username
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    
-                    <!-- User Email Information -->
-                    <div class="myprofile-email-section mb-4">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <p class="myprofile-email"><strong>Email:</strong> {{ request.user.email }}</p>
-                            </div>
-                            <div class="col-md-4 text-end">
-                                <a href="{% url 'edit_email' %}" class="myprofile-edit-email-btn btn btn-primary btn-sm">
-                                    <i class="myprofile-edit-icon fa fa-edit"></i> Edit Email
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <hr class="myprofile-divider">
-                    
-                    <h5 class="myprofile-section-title">My Addresses</h5>
-                    
-                    <div class="myprofile-button-container mb-3">
-                        <a href="{% url 'add_address' %}" class="myprofile-add-btn btn btn-success">
-                            <i class="myprofile-icon fa fa-plus"></i> Add New Address
-                        </a>
-                    </div>
-                    
-                    {% if addresses %}
-                        <div class="myprofile-addresses-container row">
-                            {% for address in addresses %}
-                                <div class="myprofile-address-col col-md-6 mb-4">
-                                    <div class="myprofile-address-card card">
-                                        <div class="myprofile-address-header card-header">
-                                            <h5 class="myprofile-address-name">{{ address.name }}</h5>
-                                        </div>
-                                        <div class="myprofile-address-body card-body">
-                                            <p class="myprofile-address-text"><strong>Address:</strong><br>{{ address.address }}</p>
-                                            <p class="myprofile-phone-text"><strong>Phone:</strong> {{ address.phone }}</p>
-                                            
-                                            <div class="myprofile-actions-group btn-group">
-                                                <a href="{% url 'edit_address' address.id %}" class="myprofile-edit-btn btn btn-primary btn-sm">
-                                                    <i class="myprofile-edit-icon fa fa-edit"></i> Edit
-                                                </a>
-                                                <a href="{% url 'delete_address' address.id %}" class="myprofile-delete-btn btn btn-danger btn-sm">
-                                                    <i class="myprofile-delete-icon fa fa-trash"></i> Delete
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="myprofile-empty-alert alert alert-info">
-                            You don't have any addresses yet. Click "Add New Address" to create one.
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+{% block content %}
+<div class="profile-container">
+    <div class="profile-section">
+        <h2>User Information</h2>
+        <p><strong>Username:</strong> {{ username }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <a href="{% url 'edit_username' %}" class="action-btn">Edit Username</a>
+        <a href="{% url 'edit_email' %}" class="action-btn">Edit Email</a>
+        <a href="{% url 'change_password' %}" class="action-btn">Change Password</a>
     </div>
-</div>
 
-</body>
-</html>
+    <div class="profile-section">
+        <h2>Saved Addresses</h2>
+        {% if addresses %}
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+                {% for address in addresses %}
+                    <tr>
+                        <td>{{ address.name }}</td>
+                        <td>{{ address.address }}</td>
+                        <td>{{ address.phone }}</td>
+                        <td>
+                            <a href="{% url 'edit_address' address.id %}" class="action-btn">Edit</a>
+                            <a href="{% url 'delete_address' address.id %}" class="action-btn delete-btn">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No addresses saved.</p>
+        {% endif %}
+        <a href="{% url 'add_address' %}" class="action-btn" style="margin-top: 20px; display: inline-block;">Add New Address</a>
+    </div>
+
+    <div class="profile-section">
+        <h2>Booking History</h2>
+        {% if orders %}
+            <table>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Address</th>
+                    <th>Payment Method</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.product.name }}</td>
+                        <td>{{ order.quantity }}</td>
+                        <td>₹{{ order.total_price }}</td>
+                        <td>{{ order.address }}</td>
+                        <td>{{ order.payment_method }}</td>
+                        <td>{{ order.status }}</td>
+                        <td>{{ order.created_at|date:"Y-m-d" }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No bookings found.</p>
+        {% endif %}
+    </div>
+
+      {% if 'username' in request.session %}
+            <div><a href="{% url 'logout' %}"><button>Logout</button></a></div>
+            {% else %}
+            <div><a href="{% url 'userlogin' %}"><button>Login</button></a></div>
+            {% endif %}
+</div>
+{% endblock %}
+

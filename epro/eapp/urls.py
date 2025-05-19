@@ -33,6 +33,9 @@ urlpatterns = [
    path('users/', views.admin_users, name='admin_users'),
    path('orders/', views.admin_orders, name='admin_orders'),
    path('allproducts/', views.allproducts, name='allproducts'),
+   path('order-success/', views.order_success, name='order_success'),
+   path('orders/update-status/<int:order_id>/', views.update_order_status, name='update_order_status'),
+  
    
    
    
@@ -44,10 +47,28 @@ urlpatterns = [
     path('profile/address/edit/<int:address_id>/', views.edit_address, name='edit_address'),
     path('profile/address/delete/<int:address_id>/', views.delete_address, name='delete_address'),
     path('profile/edit-email/', views.edit_email, name='edit_email'),
-    path('edit_username/', views.edit_username, name='edit_username'),  
+    path('edit_username/', views.edit_username, name='edit_username'),
+    path('password/change/', views.change_password, name='change_password'),  
    #  path('my-profile/', views.my_profile, name='my_profile'),  # User Profile page
    #  path('logout/', views.logout_view, name='logout'),  # User Logout page
    # path('users',views.usres_g,name='usersview'),
+   
+   
+   # path('order/', views.order_payment, name='order_payment'),
+   # path('razorpay/callback/', views.callback, name='callback'),
+   
+   
+   
+   
+  path('order_payment/<int:id>/', views.order_payment, name='order_payment'),
+    path('razorpay/callback/', views.callback, name='callback'),
+    path('order-success/', views.order_success, name='order_success'),
+    path('order-confirmation/<int:order_id>/', views.order_confirmation, name='order_confirmation'),
+    
+    
+   path('razorpay/payment/', views.order_payment1, name='order_payment1'),
+    path('razorpay/callback1/', views.callback_cart1, name='razorpay_callback'),  # Updated to callback_cart1
+    # Ensure no path like 'razorpay/callback/' exists
    
 ]
 if settings.DEBUG:

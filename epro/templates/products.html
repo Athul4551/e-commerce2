@@ -3,205 +3,353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Flipkart Theme</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --flipkart-blue: #2874f0;
-            --flipkart-yellow: #ffd700;
+            --flipkart-yellow: #ffeb3b;
             --light-gray: #f1f3f6;
-            --text-gray: #212121;
+            --text-dark: #212121;
+            --text-light: #878787;
             --success-green: #388e3c;
+            --danger-red: #d32f2f;
             --border-color: #e0e0e0;
+            --white: #ffffff;
+            --font-stack: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Inter, system-ui, -apple-system, sans-serif;
+            font-family: var(--font-stack);
         }
-        
+
         body {
-            background: var(--light-gray);
+            background-color: var(--light-gray);
         }
-        
-        /* Navigation Styles */
-        .navi {
-            background: var(--flipkart-blue);
-            padding: 12px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+
+        a {
+            text-decoration: none;
+            color: var(--text-dark);
+            style: none;
         }
-        
-        .left {
+
+        /* Breadcrumbs */
+        .breadcrumbs {
             max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            flex-wrap: wrap;
+            margin: 10px auto;
+            font-size: 12px;
+            color: var(--text-light);
         }
-        
-        .ele {
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 8px 16px;
-            transition: all 0.2s ease;
-            border-radius: 4px;
-        }
-        
-        .ele:hover {
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .search {
-            flex: 1;
-            max-width: 600px;
-            min-width: 200px;
-        }
-        
-        .ss {
-            width: 100%;
-            padding: 12px 16px;
-            border: none;
-            border-radius: 4px;
-            outline: none;
-        }
-        
-        .ice {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .ice1 {
-            background: white;
+
+        .breadcrumbs a {
             color: var(--flipkart-blue);
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s ease;
+            text-decoration: none;
         }
-        
-        .ice1:hover {
-            transform: scale(1.1);
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
         }
-        
-        /* Gallery and Product Info */
+
+        /* Navigation */
+.navi {
+    background: var(--flipkart-blue);
+    padding: 12px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.left {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.ele {
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 16px;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.ele:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.search {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+    margin-left: auto;
+}
+
+.search input {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    font-size: 14px;
+}
+
+.search button {
+    background: var(--flipkart-yellow);
+    color: black;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.search button:hover {
+    background: #ffcc00;
+}
+
+
+.ss {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 4px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ice {
+    display: flex;
+    gap: 12px;
+}
+/* New and updated icon class */
+.icon {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    transition: all 0.3s ease;
+}
+
+.icon svg.bi-person-circle {
+    color: white;
+    width: 32px; /* Increased size */
+    height: 32px; /* Increased size */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.icon:hover svg.bi-person-circle {
+    color: #fcfcfc; /* Orange accent on hover */
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+
+.ice1 {
+    background: white;
+    color: var(--flipkart-blue);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.ice1:hover {
+    transform: scale(1.1);
+}
+
+        /* GALLERY */
         .gallery-wrapper {
             max-width: 1400px;
             margin: 24px auto;
             padding: 24px;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .gallery {
-            display: grid;
-            grid-template-columns: minmax(400px, 1fr) 2fr;
-            gap: 32px;
-            align-items: start;
-        }
-        
-        .hh {
-           /* position: sticky;*/
-            top: 100px;
-            padding: 24px;
-            background: white;
-            border-radius: 8px;
-        }
-        
-        .hh img {
-            width: 100%;
-            max-height: 500px;
-            object-fit: contain;
-            margin-bottom: 16px;
-        }
-        
-        .product-info {
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
-        .product-info p:first-of-type {
-            font-size: 24px;
-            font-weight: 500;
-            color: var(--text-gray);
-            margin-bottom: 8px;
-        }
-        
-        .product-info p:nth-of-type(2) {
-            font-size: 30px;
-            font-weight: bold;
-            color: var(--text-gray);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .product-info p:nth-of-type(3) {
-            font-size: 28px;
-            font-weight: bold;
-            color: var(--text-gray);
-        }
-        
-        .product-info p:nth-of-type(4) {
-            background: #fff4f4;
-            color: var(--success-green);
-            font-size: 16px;
-            padding: 12px 16px;
-            border-radius: 4px;
-            border: 1px solid #fde1e1;
-            margin: 8px 0;
-        }
-        
-        .product-info p:nth-of-type(5) {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.6;
-        }
-        
-        /* Button Styles */
-        button {
-            background: var(--flipkart-blue);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 100%;
-            max-width: 200px;
-            margin-top: 16px;
-        }
-        
-        button:hover {
-            background: #1a5bc0;
-            transform: translateY(-2px);
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        
-        /* Footer Styles */
+
+        .gallery {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr;
+            gap: 16px;
+        }
+
+        .thumbnails {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .thumbnails img {
+            width: 100%;
+            height: 80px;
+            object-fit: contain;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .thumbnails img:hover {
+            border-color: var(--flipkart-blue);
+        }
+
+        .main-image img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+        }
+
+        /* PRODUCT INFO */
+        .product-info {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .product-info .name {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-section .current-price {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .price-section .original-price {
+            font-size: 18px;
+            color: var(--text-light);
+            text-decoration: line-through;
+        }
+
+        .price-section .discount {
+            font-size: 16px;
+            color: var(--success-green);
+            font-weight: 500;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .rating .stars {
+            color: #ffa500;
+        }
+
+        .rating .reviews {
+            color: var(--text-light);
+        }
+
+        .offers {
+            margin-top: 10px;
+        }
+
+        .offers h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .offer-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .offer-item i {
+            color: var(--flipkart-blue);
+        }
+
+        .delivery {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-top: 10px;
+        }
+
+        .delivery i {
+            color: var(--flipkart-blue);
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        button {
+            background-color: var(--flipkart-yellow);
+            color: black;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background-color: #ffd700;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .buy-now-btn {
+            background-color: #ff9f00;
+        }
+
+        .buy-now-btn:hover {
+            background-color: #fb8c00;
+        }
+
+        /* OUT OF STOCK */
+        .out-of-stock {
+            color: var(--danger-red);
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        /* FOOTER */
         footer {
             background: #172337;
             color: white;
             padding: 48px 24px;
-            margin-top: 48px;
         }
-        
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -209,223 +357,253 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 32px;
         }
-        
+
+        footer h4 {
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: white;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer ul li {
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        footer ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        footer ul li a:hover {
+            color: white;
+        }
+
         .foot-icon {
             display: flex;
             gap: 12px;
-            margin: 16px 0;
+            margin: 12px 0;
         }
-        
+
         .foot-icon div {
+            background-color: rgba(255, 255, 255, 0.1);
             width: 36px;
             height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,255,255,0.1);
             border-radius: 50%;
-            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
             transition: all 0.2s ease;
         }
-        
+
         .foot-icon div:hover {
-            background: rgba(255,255,255,0.2);
+            background-color: rgba(255, 255, 255, 0.25);
         }
-        
-        footer ul {
-            list-style: none;
-        }
-        
-        footer ul li {
-            margin-bottom: 12px;
-            color: #878787;
-        }
-        
-        footer h4 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        
-        footer a {
-            color: #878787;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-        
-        footer a:hover {
-            color: white;
-        }
-        
-        /* Link Styles */
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .gallery {
-                grid-template-columns: 1fr;
-            }
-            
-            .hh {
-                position: relative;
-                top: 0;
-            }
-        }
-        
+
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .navi {
-                padding: 12px;
-            }
-            
-            .left {
-                gap: 12px;
-            }
-            
-            .gallery-wrapper {
-                padding: 12px;
-                margin: 12px;
-            }
-            
             .gallery {
-                gap: 16px;
-            }
-            
-            .hh, .product-info {
-                padding: 16px;
-            }
-            
-            .product-info p:first-of-type {
-                font-size: 20px;
-            }
-            
-            .product-info p:nth-of-type(2) {
-                font-size: 24px;
-            }
-            
-            .product-info p:nth-of-type(3) {
-                font-size: 22px;
-            }
-            
-            .product-info p:nth-of-type(4) {
-                font-size: 14px;
-                padding: 8px 12px;
-            }
-            
-            .container {
                 grid-template-columns: 1fr;
             }
-            
+
+            .thumbnails {
+                flex-direction: row;
+                overflow-x: auto;
+            }
+
+            .left {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
             button {
-                max-width: 100%;
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Breadcrumbs -->
+    <!-- <div class="breadcrumbs">
+        <a href="#">Home</a> > <a href="#">Footwear</a> > <a href="#">Men's Footwear</a> > <a href="#">Men's Casual Shoes</a> > <a href="#">RED TAPE</a> > RED TAPE Lifestyle Casual Shoes
+    </div> -->
+
+    <!-- Navigation Bar -->
     <div class="navi">
         <div class="left">
-            <a href="{% url 'firstpage' %}"><div class="ele">Shop Now</div></a>
-           <a href="{% url 'review' %}"><div class="ele">Reviews</div></a>
+             <a href="{% url 'firstpage' %}"><div class="ele">Home</div></a>
+            <a href="{% url 'allproducts' %}"><div class="ele">shope now</div></a>
+           <!-- <a href="{% url 'review' %}"><div class="ele">Reviews</div></a> -->
            <a href="{% url 'aboutus' %}"><div class="ele">About Us</div></a>
-            <div class="ele">Contact Us</div>
+           <a href="{% url 'cart_view' %}"><div class="ele">views cart</div></a> 
             <div class="search">
-                <input class="ss" type="search" placeholder="Product Code" id="first name" name="firstname" maxlength="50px" required>
+                <!-- <form method="GET" action="{% url 'search_results' %}">
+                    <input type="text" name="q" placeholder="Search products..." required>
+                    <button type="submit" class="button">Search</button>
+                </form> -->
             </div>
-            <div class="ice">
+            <!-- <div class="ice">
                 <div class="ice1">F</div>
                 <div class="ice1">IN</div>
-            </div>
-            {% if 'username' in request.session %}
+            </div> -->
+            <!-- {% if 'username' in request.session %}
             <div><a href="{% url 'logout' %}"><button>Logout</button></a></div>
             {% else %}
             <div><a href="{% url 'userlogin' %}"><button>Login</button></a></div>
-            {% endif %}
+            {% endif %} -->
+
+             <a href="{% url 'profile' %}" class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+</svg></a>
         </div>
     </div>
 
+    <!-- Product Gallery -->
     <div class="gallery-wrapper">
         <div class="gallery">
-            {% for i in gallery_images %}
-                <div class="hh">
-                    <img src="{{ i.feedimage.url }}" alt="Gallery Image">
+            <!-- Thumbnails -->
+            <div class="thumbnails">
+                {% for i in gallery_images %}
+                <img src="{{ i.image1.url }}" alt="Thumbnail 1">
+                <img src="{{ i.image2.url }}" alt="Thumbnail 2">
+                <img src="{{ i.image3.url }}" alt="Thumbnail 3">
+                {% endfor %}
+            </div>
+
+            <!-- Main Image -->
+            <div class="main-image">
+                {% for i in gallery_images %}
+                <img src="{{ i.feedimage.url }}" alt="Main Image">
+                {% endfor %}
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+                {% for i in gallery_images %}
+                <div class="name">{{ i.name }}</div>
+                <span class="current-price">{{ i.model }}</span>
+                <div class="price-section">
+                    <span class="current-price">{{ i.price }}</span>
+                    <!-- <span class="rupee">{{ i.model}}</span> -->
+                    <!-- <span class="original-price">{{ i.model }}</span> -->
+                    <span class="discount">{{ i.discount }}</span>
                 </div>
-                <div class="product-info">
-                    <p>{{ i.name }}</p>
-                    <p>{{ i.model }}</p>
-                    <p>{{ i.price }}</p>
-                    <p>{{ i.offers }}</p>
+                <div class="rating">
+                    <span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></span>
+                    <!-- <span class="reviews">295 reviews</span> -->
+                </div>
+                <div class="offers">
+                    <h4>Available Offers</h4>
+
+                    <span class="current-price">{{ i.offers }}</span>
+                    <!-- <div class="offer-item">
+                        <i class="fas fa-tag"></i>
+                        <span>Bank Offer 5% Unlimited Cashback on Flipkart Axis Bank Credit Card</span>
+                    </div>
+                    <div class="offer-item">
+                        <i class="fas fa-tag"></i>
+                        <span>Bank Offer 10% instant discount on SBI Credit Card Transactions, up to ₹1,250</span>
+                    </div> -->
+                </div>
+                <div class="delivery">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Cash on Delivery Available</span>
                 </div>
 
+                <!-- Buttons -->
                 {% if i.quantity > 0 %}
-
-                {% if i.id in cart_product_ids %}
-                    <a href="{% url 'cart_view' %}"><button>Go to Cart</button></a>
+                <div class="button-group">
+                    {% if i.id in cart_product_ids %}
+                    <a href="{% url 'cart_view' %}"><button><i class="fas fa-shopping-cart"></i> Go to Cart</button></a>
+                    {% else %}
+                    <a href="{% url 'add_to_cart' i.id %}"><button><i class="fas fa-shopping-cart"></i> Add to Cart</button></a>
+                    {% endif %}
+                    <a href="{% url 'buy_now' i.id %}">
+                        <button class="buy-now-btn"><i class="fas fa-bolt"></i> Buy Now</button>
+                    </a>
+                </div>
                 {% else %}
-                    <a href="{% url 'add_to_cart' i.id %}"><button>Add to Cart</button></a>
+                <p class="out-of-stock">Out of stock</p>
                 {% endif %}
-                <a href="{% url 'buy_now' i.id %}">
-                    <button class="buy-now-btn">Buy Now</button>
-                </a>
-
-                {% else %}
-                        
-                        <p style="color: RED;">out of stock</p>
-
-                        {% endif %}
-
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
     </div>
+
+    <!-- Footer -->
     <footer>
-        <div class="footer-block1">
-            <div class="container">
-                <div class="colm1">
-                    <ul>
-                        <li class="foot-logo"></li>
-                        <li class="foot-icon">
-                            <div class="f"><p>F</p></div>
-                            <div class="tw"><p>TW</p></div>
-                            <div class="in"><p>IN</p></div>
-                            <div class="x"><p>X</p></div>
-                        </li>
-                        <li>
-                            <p>© All rights reserved by shose cart, Cochin, India.</p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="colm2">
-                    <ul>
-                        <li><h4>Solutions</h4></li>
-                        <li>My Account</li>
-                        <li>Track Your Order</li>
-                        <li>Order History</li>
-                        <li>Payment Methods</li>
-                        <li>Privacy Policy</li>
-                    </ul>
-                </div>
-                <div class="colm3">
-                    <ul>
-                        <li><h4>About Us</h4></li>
-                        <li><p>About Us</p></li>
-                        <li><p>Terms & Conditions</p></li>
-                        <li><p>Privacy Policy</p></li>
-                        <li><p>Return Policy</p></li>
-                        <li><p>Site Map</p></li>
-                    </ul>
-                </div>
-                <div class="colm4">
-                    <ul>
-                        <li><h4>Contact Us</h4></li>
-                        <li><p>Kureekkadu, Ernakulam, Kerala</p></li>
-                        <li><a href="tel:+918606570657">+91-86065 70657</a></li>
-                        <li><p>Mon - Sat / 9:00 AM - 6:00 PM</p></li>
-                    </ul>
-                </div>
+        <div class="container">
+            <div class="colm1">
+                <ul>
+                    <li>© All rights reserved by Shoese Cart</li>
+                    <li class="foot-icon">
+                        <div class="f">F</div>
+                        <div class="tw">TW</div>
+                        <div class="in">IN</div>
+                        <div class="x">X</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="colm2">
+                <ul>
+                    <li><h4>Solutions</h4></li>
+                    <li>My Account</li>
+                    <li>Track Your Order</li>
+                    <li>Order History</li>
+                    <li>Payment Methods</li>
+                </ul>
+            </div>
+            <div class="colm3">
+                <ul>
+                    <li><h4>About Us</h4></li>
+                    <li>About Us</li>
+                    <li>Terms & Conditions</li>
+                </ul>
+            </div>
+            <div class="colm4">
+                <ul>
+                    <li><h4>Contact Us</h4></li>
+                    <li>Contact Info</li>
+                    <li>Address</li>
+                </ul>
             </div>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.getElementById('product-search');
+            const thumbnails = document.querySelectorAll('.thumbnails img');
+            const mainImage = document.querySelector('.main-image img');
+
+            // Dynamic Search
+            searchInput.addEventListener('input', function() {
+                console.log(searchInput.value);
+            });
+
+            // Thumbnail Click to Change Main Image
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function() {
+                    mainImage.src = this.src;
+                });
+            });
+        });
+    </script>
 </body>
 </html>
